@@ -1,0 +1,26 @@
+{
+  "name": "baseball-manager",
+  "version": "1.0.0",
+  "description": "Node app for running baseball simulations.",
+  "main": "server.js",
+  "scripts": {
+    "client": "npm start --prefix client",
+    "server": "nodemon server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "author": "Ryan Dale",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.1.0",
+    "csv-parser": "^2.3.0",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "gridfs-stream": "^1.1.1",
+    "mongoose": "^5.5.4",
+    "mongoose-gridfs": "^1.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  }
+}

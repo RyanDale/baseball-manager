@@ -3,10 +3,10 @@ const connectToDB = require('./connectToDB');
 const csv = require('csv-parser');
 const fs = require('fs');
 const _ = require('lodash');
-const Hitter = require('../models/Hitter');
+
 const { createBucket } = require('mongoose-gridfs');
 
-let records = [];
+const Hitter = require('../models/Hitter');
 
 function makeCamelCase(obj, oldKey) {
     // Replace plus signs
@@ -112,6 +112,7 @@ function addCards(hitters) {
 
 connectToDB().then(() => {
     const readStream = fs.createReadStream('./assets/batters2019.csv');
+    let records = [];
     readStream.pipe(csv())
         .on('data', record => records.push(record))
         .on('end', () => {
