@@ -123,7 +123,6 @@ connectToDB().then(() => {
                 const hitters = records.map(record => new Hitter(record));
                 Hitter.insertMany(hitters).then(docs => {
                     console.log('Success', docs.length);
-                    process.exit();
                 }).catch(err => {
                     console.log('Error', err);
                     process.exit();
