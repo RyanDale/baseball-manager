@@ -1,9 +1,10 @@
+const connectToDB = require('./connectToDB');
+
 const csv = require('csv-parser');
 const fs = require('fs');
 const _ = require('lodash');
-
-const connectToDB = require('./connectToDB');
 const Hitter = require('../models/Hitter');
+const { createBucket } = require('mongoose-gridfs');
 
 let records = [];
 
@@ -94,19 +95,38 @@ function transformBatter(batter) {
     return batter;
 }
 
-connectToDB();
+function addCards(hitters) {
+    let hittersWithCards = [];
+    hitters.forEach(hitter => {
+        let fileName = `${hitter.firstName.replace(/ /g, '').toLowerCase()}-${hitter.lastName.replace(/ /g, '').toLowerCase()}.png`;
+        if (fs.existsSync('./assets/cards/' + fileName)) {
+            const bucket = createBucket();
+            const filePath = './assets/cards/' + fileName;
+            const readStream = fs.createReadStream(filePath);
+            const writeStream = bucket.writeFile({ filename: fileName }, readStream);
+            hitter.card = writeStream.id;
+            hittersWithCards.push(hitter);
+        }
+    });
+}
 
-fs.createReadStream('./assets/batters2019.csv')
-    .pipe(csv())
-    .on('data', record => records.push(record))
-    .on('end', () => {
-        records = records.map(transformBatter);
-        Hitter.deleteMany({}, () => {
-            const hitters = records.map(record => new Hitter(record));
-            Hitter.insertMany(hitters).then(docs => {
-                console.log('Success', docs.length);
-            }).catch(err => {
-                console.log('Error', err);
+connectToDB().then(() => {
+    const readStream = fs.createReadStream('./assets/batters2019.csv');
+    readStream.pipe(csv())
+        .on('data', record => records.push(record))
+        .on('end', () => {
+            readStream.destroy();
+            records = records.map(transformBatter);
+            addCards(records);
+            Hitter.deleteMany({}, () => {
+                const hitters = records.map(record => new Hitter(record));
+                Hitter.insertMany(hitters).then(docs => {
+                    console.log('Success', docs.length);
+                    process.exit();
+                }).catch(err => {
+                    console.log('Error', err);
+                    process.exit();
+                });
             });
         });
-    });
+});
