@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Schema = mongoose.Schema;
 
 const HitterSchema = new Schema({
@@ -94,6 +95,9 @@ const HitterSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
+    },
+    card: {
+        type: Schema.Types.ObjectId
     }
 });
 
