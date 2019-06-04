@@ -98,7 +98,8 @@ function transformBatter(batter) {
 function addCards(hitters) {
     let hittersWithCards = [];
     hitters.forEach(hitter => {
-        let fileName = `${hitter.firstName.replace(/ /g, '').toLowerCase()}-${hitter.lastName.replace(/ /g, '').toLowerCase()}.png`;
+        let cleanName = name => name.replace(/[\s.-]/g, '').toLowerCase();
+        let fileName = `${cleanName(hitter.firstName)}-${cleanName(hitter.lastName)}.png`;
         if (fs.existsSync('./assets/cards/' + fileName)) {
             const bucket = createBucket();
             const filePath = './assets/cards/' + fileName;
