@@ -3,7 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Card, Table, Nav, Spinner, Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 import { getHitters } from '../actions/hitterActions';
 
@@ -57,11 +57,32 @@ class HitterList extends Component {
             {
                 dataField: 'position',
                 text: 'Position',
-                formatter: (cell, row) => row.positionList.join(', ')
+                formatter: (cell, row) => row.positionList.join(', '),
+                filter: selectFilter({
+                    options: {
+                        'C': 'Catcher',
+                        '1B': 'First Base',
+                        '2B': 'Second Base',
+                        '3B': 'Third Base',
+                        'SS': 'Short Stop',
+                        'LF': 'Left Field',
+                        'CF': 'Center Field',
+                        'RF': 'Right Field',
+                        'OF': 'Outfield'
+                    },
+                    onFilter: filterVal => filterVal ? this.props.hitter.hitters.filter(hitter => hitter.positionList.includes(filterVal)) : this.props.hitter.hitters
+                })
             },
             {
                 dataField: 'hand',
-                text: 'Bats'
+                text: 'Bats',
+                filter: selectFilter({
+                    options: {
+                        'L': 'Left',
+                        'R': 'Right',
+                        'S': 'Switch Hitter'
+                    }
+                })
             },
             {
                 dataField: 'salary',
@@ -144,7 +165,7 @@ class HitterList extends Component {
                     data={hitters}
                     columns={this.columns}
                     defaultSorted={defaultSorted}
-                    onFilter={field => f => f}
+                    filter={filterFactory()}
                     onTableChange={this.handleTableChange}
                     bootstrap4
                 />
