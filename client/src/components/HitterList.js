@@ -12,6 +12,22 @@ const defaultSorted = [{
     order: 'desc'
 }];
 
+function renderResultField(field) {
+    if (!field || !field.length) {
+        // Empty field, display as such
+        return '--';
+    } else if (field[0] === field[1]) {
+        // Same value so we don't want to display as a range
+        return field[0];
+    } else if (field[1] === 50) {
+        // This means a player maxes out at the first value
+        return `${field[0]}+`;
+    } else {
+        // Default, two different value fields
+        return field.join('-');
+    }
+}
+
 
 class HitterList extends Component {
     static propTypes = {
@@ -179,6 +195,35 @@ class HitterList extends Component {
                         <img height="400"
                             src={`/api/hitters/${this.state.activeHitter._id}/card`}
                             style={{ display: 'block', margin: '0 auto' }} />
+                        <br />
+                        <Table striped bordered>
+                            <thead>
+                                <tr>
+                                    <th>K</th>
+                                    <th>GB</th>
+                                    <th>FB</th>
+
+                                    <th>BB</th>
+                                    <th>1B</th>
+                                    <th>2B</th>
+                                    <th>3B</th>
+                                    <th>HR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{renderResultField(this.state.activeHitter.k)}</td>
+                                    <td>{renderResultField(this.state.activeHitter.gb)}</td>
+                                    <td>{renderResultField(this.state.activeHitter.fb)}</td>
+
+                                    <td>{renderResultField(this.state.activeHitter.bb)}</td>
+                                    <td>{renderResultField(this.state.activeHitter._1B)}</td>
+                                    <td>{renderResultField(this.state.activeHitter._2B)}</td>
+                                    <td>{renderResultField(this.state.activeHitter._3B)}</td>
+                                    <td>{renderResultField(this.state.activeHitter.hr)}</td>
+                                </tr>
+                            </tbody>
+                        </Table>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.handleClose}>
