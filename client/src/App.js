@@ -4,6 +4,7 @@ import store from './store';
 import {createBrowserHistory} from 'history'
 import mixpanel from 'mixpanel-browser';
 
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import './App.css';
 
 import NavBar from './components/NavBar';
