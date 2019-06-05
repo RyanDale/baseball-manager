@@ -8,7 +8,6 @@ const Grid = require('gridfs-stream');
 
 
 router.get('/', (req, res) => {
-    console.log('r', req.query);
     const query = req.query.withCards ? { card: { $ne: null } } : {};
     Hitter.find(query).sort({
         created: -1,
