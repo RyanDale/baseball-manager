@@ -60,9 +60,30 @@ function setResultRange(value) {
     }
 }
 
+function transformPlayer(player, alterKeyNames=[], resultKeys=[], intKeys=[]) {
+    _.keys(player).forEach(key => makeCamelCase(player, key));
+
+    alterKeyNames.forEach(key => {
+        delete Object.assign(player, { [key[1]]: player[key[0]] })[key[0]];
+    });
+
+    resultKeys.forEach(key => {
+        player[key] = setResultRange(player[key]);
+    });
+
+    intKeys.forEach(key => {
+        player[key] = parseInt(player[key]);
+    });
+
+    player['positionList'] = player['pos'].split('/');
+
+    // Useful for when working with pitchers
+    player['primaryPosition'] = player['pos'].split('/')[0];
+    iconsToList(player);
+    return player;
+}
+
 module.exports = {
     addCards,
-    iconsToList,
-    makeCamelCase,
-    setResultRange
+    transformPlayer
 }
