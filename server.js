@@ -12,6 +12,7 @@ app.use(express.json());
 connectToDB();
 
 app.use('/api/hitters', require('./routes/hitters'));
+app.use('/api/pitchers', require('./routes/pitchers'));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
