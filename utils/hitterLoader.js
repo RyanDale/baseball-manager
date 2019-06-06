@@ -1,53 +1,12 @@
 const connectToDB = require('./connectToDB');
+const { addCards, iconsToList, makeCamelCase, setResultRange } = require('./importHelpers');
 
 const csv = require('csv-parser');
 const fs = require('fs');
 const _ = require('lodash');
 
-const { createBucket } = require('mongoose-gridfs');
-
 const Hitter = require('../models/Hitter');
 
-function makeCamelCase(obj, oldKey) {
-    // Replace plus signs
-    let newKey = _.camelCase(oldKey.replace('+', 'Plus'));
-
-    // Ensure illegal keys aren't created
-    if (newKey.match(/^\d/)) {
-        newKey = `_${newKey}`;
-    }
-
-    delete Object.assign(obj, { [newKey]: obj[oldKey] })[oldKey];
-}
-
-function iconsToList(batter) {
-    let key;
-    batter.icons = []
-    _.times(6, i => {
-        key = `icon${i + 1}`;
-        if (batter[key]) {
-            batter.icons.push(batter[key]);
-        }
-        delete batter[key];
-    });
-}
-
-function setResultRange(value) {
-    if (value === '-') {
-        return [];
-    }
-
-    value = value.split('-');
-    if (value.length === 1) {
-        if (value[0].includes('+')) {
-            return [parseInt(value[0].split('+')[0]), 50];
-        } else {
-            return [parseInt(value[0]), parseInt(value[0])];
-        }
-    } else if (value.length === 2) {
-        return [parseInt(value[0]), parseInt(value[1])];
-    }
-}
 
 function setOB(batter) {
     if (parseInt(batter.obPlus) === 0) {
@@ -93,22 +52,6 @@ function transformBatter(batter) {
     batter['primaryPosition'] = batter['pos'].split('/')[0];
     iconsToList(batter);
     return batter;
-}
-
-function addCards(hitters) {
-    let hittersWithCards = [];
-    hitters.forEach(hitter => {
-        let cleanName = name => name.replace(/[\s.-]/g, '').toLowerCase();
-        let fileName = `${cleanName(hitter.firstName)}-${cleanName(hitter.lastName)}.png`;
-        if (fs.existsSync('./assets/cards/' + fileName)) {
-            const bucket = createBucket();
-            const filePath = './assets/cards/' + fileName;
-            const readStream = fs.createReadStream(filePath);
-            const writeStream = bucket.writeFile({ filename: fileName }, readStream);
-            hitter.card = writeStream.id;
-            hittersWithCards.push(hitter);
-        }
-    });
 }
 
 connectToDB().then(() => {
