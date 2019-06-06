@@ -3,24 +3,24 @@ const PlayerSchema = require('./Player');
 
 const Schema = mongoose.Schema;
 
-const HitterSchema = new Schema({
+const PitcherSchema = new Schema({
     ...PlayerSchema,
-    speed: {
+    ip: {
         type: Number,
         required: true
     },
-    ob: {
+    cmd: {
         type: Number,
         required: true
     },
-    obPlus: {
+    cmdPlus: {
         type: Object,
         required: true
     },
-    _3B: {
+    xRange: {
         type: [],
         required: true
     }
 });
 
-module.exports = Hitter = mongoose.model('Hitter', HitterSchema);
+module.exports = Hitter = mongoose.model('Pitcher', PitcherSchema);
