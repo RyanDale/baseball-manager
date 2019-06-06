@@ -27,13 +27,13 @@ connectToDB().then(() => {
         ['hnd', 'hand'],
         ['sal', 'salary'],
         ['clt', 'clutch'],
-        ['x-r', 'xRange'],
+        ['xR', 'xRange'],
         ['fld', 'fielding'],
     ];
     const resultKeys = [
-        'k', 'gb', 'fb', 'bb', '_1B', '_2B', 'hr'
+        'k', 'gb', 'fb', 'bb', '_1B', '_2B', 'hr', 'xRange'
     ];
-    const intKeys = ['salary', 'clutch', 'fielding', 'cmd', 'x-r'];
+    const intKeys = ['salary', 'clutch', 'fielding', 'cmd'];
 
     let records = [];
     readStream.pipe(csv())
