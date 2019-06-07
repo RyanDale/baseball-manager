@@ -5,6 +5,7 @@ import { HashRouter, Route } from "react-router-dom";
 import Home from './Home';
 import HitterList from './HitterList';
 import PitcherList from './PitcherList';
+import TeamList from './TeamList';
 
 class NavBar extends Component {
   render() {
@@ -16,12 +17,14 @@ class NavBar extends Component {
             <Nav.Link href="#/">Home</Nav.Link>
             <Nav.Link href="#/pitcher-list">Pitchers</Nav.Link>
             <Nav.Link href="#/hitter-list">Hitters</Nav.Link>
+            <Nav.Link href="#/team-list">Teams</Nav.Link>
           </Nav>
         </Navbar>
         <Container>
           <Route path="/" exact component={Home} />
           <Route path="/pitcher-list" component={PitcherList} />
           <Route path="/hitter-list" component={HitterList} />
+          <Route path="/team-list" component={TeamList} />
         </Container>
       </HashRouter>
     );

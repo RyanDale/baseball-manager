@@ -163,7 +163,6 @@ class PitcherList extends Component {
 
     render() {
         const { pitchers } = this.props.pitcher;
-        console.log('p', pitchers);
         return (
             <Card body>
                 <Card.Title>Pitcher List</Card.Title>
