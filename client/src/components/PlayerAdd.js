@@ -48,7 +48,7 @@ class PlayerAdd extends Component {
             const team = this.props.teams.find(team => team._id === this.state.team);
             const players = this.props.players;
             this.props.updateTeam({
-                [this.props.playerType]: [...team[this.props.playerType], players],
+                [this.props.playerType]: [...team[this.props.playerType], ...players],
                 name: team.name,
                 _id: team._id
             });

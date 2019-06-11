@@ -201,7 +201,7 @@ class PitcherList extends Component {
         return (
             <Card body>
                 <Card.Title>Pitcher List</Card.Title>
-                <PlayerAdd playerType="pitchers" players={this.state.selected/*.map(p => pitchers.find(pitcher => pitcher._id === p))*/}></PlayerAdd>
+                <PlayerAdd playerType="pitchers" players={this.state.selected}></PlayerAdd>
                 <BootstrapTable
                     striped
                     remote={{ sort: true }}
