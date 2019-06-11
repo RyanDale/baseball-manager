@@ -3,7 +3,8 @@ import {
     DELETE_TEAM,
     GET_TEAM,
     GET_TEAMS,
-    TEAMS_LOADING
+    TEAMS_LOADING,
+    UPDATE_TEAM
 } from '../actions/types';
 
 const initialState = {
@@ -36,6 +37,11 @@ export default function (state = initialState, action) {
                 teams: action.payload,
                 team: action.payload,
                 loading: false
+            };
+        case UPDATE_TEAM:
+            return {
+                ...state,
+                team: action.payload,
             };
         case TEAMS_LOADING:
             return {

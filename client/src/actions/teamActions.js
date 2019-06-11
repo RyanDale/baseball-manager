@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { CREATE_TEAM, GET_TEAM, GET_TEAMS, TEAMS_LOADING, DELETE_TEAM } from "./types";
+import { CREATE_TEAM, GET_TEAM, GET_TEAMS, TEAMS_LOADING, DELETE_TEAM, UPDATE_TEAM } from "./types";
 
 
 export const createTeam = team => (dispatch, getState) => {
@@ -36,6 +36,17 @@ export const getTeams = () => dispatch => {
     payload: response.data
   }));
 }
+
+export const updateTeam = team => (dispatch, getState) => {
+  axios
+    .put(`/api/teams/${team._id}`, team, getState)
+    .then(response =>
+      dispatch({
+        type: UPDATE_TEAM,
+        payload: response.data
+      })
+    );
+};
 
 export const setTeamsLoading = () => ({
   type: TEAMS_LOADING

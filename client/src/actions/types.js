@@ -14,3 +14,4 @@ export const GET_TEAM = 'GET_TEAM';
 export const GET_TEAMS = 'GET_TEAMS';
 export const TEAMS_LOADING = 'TEAMS_LOADING';
 export const DELETE_TEAM = 'DELETE_TEAM';
+export const UPDATE_TEAM = 'UPDATE_TEAM';

@@ -6,11 +6,17 @@ import PropTypes from 'prop-types';
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 import { getPitchers } from '../actions/pitcherActions';
+import PlayerAdd from './PlayerAdd';
 
 const defaultSorted = [{
     dataField: 'price',
     order: 'desc'
 }];
+
+const selectRow = {
+    mode: 'checkbox',
+    clickToSelect: true
+};
 
 function renderResultField(field) {
     if (!field || !field.length) {
@@ -161,11 +167,21 @@ class PitcherList extends Component {
         }, 2000);
     }
 
+    playerAdded(player) {
+        console.log('p', player);
+        const { team } = this.props.team;
+        this.props.updateContact({
+            player: [...team.players, player],
+            _id: team._id
+        });
+    }
+
     render() {
         const { pitchers } = this.props.pitcher;
         return (
             <Card body>
                 <Card.Title>Pitcher List</Card.Title>
+                <PlayerAdd playerType="hitters" playerAdded={this.playerAdded.bind(this)}></PlayerAdd>
                 <BootstrapTable
                     striped
                     remote={{ sort: true }}
@@ -175,6 +191,7 @@ class PitcherList extends Component {
                     defaultSorted={defaultSorted}
                     filter={filterFactory()}
                     onTableChange={this.handleTableChange}
+                    selectRow={selectRow}
                     bootstrap4
                 />
                 <Modal show={this.state.show} onHide={this.handleClose}>
