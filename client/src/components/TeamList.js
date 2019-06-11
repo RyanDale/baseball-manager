@@ -46,7 +46,7 @@ class TeamList extends Component {
                                     <TeamDelete record={team}></TeamDelete>
                                 </td>
                                     <td>
-                                        <Nav.Link href={`#/team-detail/${team._id}`}>
+                                        <Nav.Link href={`#/team/${team._id}`}>
                                             {team.name}
                                         </Nav.Link>
                                     </td>

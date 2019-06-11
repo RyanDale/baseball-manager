@@ -5,6 +5,7 @@ import { HashRouter, Route } from "react-router-dom";
 import Home from './Home';
 import HitterList from './HitterList';
 import PitcherList from './PitcherList';
+import TeamDetail from './TeamDetail';
 import TeamList from './TeamList';
 
 class NavBar extends Component {
@@ -25,6 +26,7 @@ class NavBar extends Component {
           <Route path="/pitcher-list" component={PitcherList} />
           <Route path="/hitter-list" component={HitterList} />
           <Route path="/team-list" component={TeamList} />
+          <Route path="/team/:id" component={TeamDetail} />
         </Container>
       </HashRouter>
     );
