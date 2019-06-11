@@ -13,11 +13,6 @@ const defaultSorted = [{
     order: 'desc'
 }];
 
-const selectRow = {
-    mode: 'checkbox',
-    clickToSelect: true
-};
-
 function renderResultField(field) {
     if (!field || !field.length) {
         // Empty field, display as such
@@ -48,7 +43,8 @@ class PitcherList extends Component {
 
         this.state = {
             show: false,
-            activePitcher: {}
+            activePitcher: {},
+            selected: []
         };
 
         this.columns = [
@@ -167,21 +163,45 @@ class PitcherList extends Component {
         }, 2000);
     }
 
-    playerAdded(player) {
-        console.log('p', player);
-        const { team } = this.props.team;
-        this.props.updateContact({
-            player: [...team.players, player],
-            _id: team._id
-        });
+    handleOnSelect = (row, isSelect) => {
+        if (isSelect) {
+            this.setState(() => ({
+                selected: [...this.state.selected, row._id]
+            }));
+        } else {
+            this.setState(() => ({
+                selected: this.state.selected.filter(x => x !== row._id)
+            }));
+        }
+    }
+
+    handleOnSelectAll = (isSelect, rows) => {
+        const ids = rows.map(r => r._id);
+        if (isSelect) {
+            this.setState(() => ({
+                selected: ids
+            }));
+        } else {
+            this.setState(() => ({
+                selected: []
+            }));
+        }
     }
 
     render() {
         const { pitchers } = this.props.pitcher;
+        const selectRow = {
+            mode: 'checkbox',
+            clickToSelect: true,
+            selected: this.state.selected,
+            onSelect: this.handleOnSelect,
+            onSelectAll: this.handleOnSelectAll
+        };
+
         return (
             <Card body>
                 <Card.Title>Pitcher List</Card.Title>
-                <PlayerAdd playerType="hitters" playerAdded={this.playerAdded.bind(this)}></PlayerAdd>
+                <PlayerAdd playerType="pitchers" players={this.state.selected/*.map(p => pitchers.find(pitcher => pitcher._id === p))*/}></PlayerAdd>
                 <BootstrapTable
                     striped
                     remote={{ sort: true }}

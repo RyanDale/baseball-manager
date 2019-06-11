@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     Team.findById(req.params.id)
-        .populate('hitters', 'pitchers')
+        .populate(['hitters', 'pitchers'])
         .then(team => res.json(team))
         .catch(e => {
             console.log(e);
