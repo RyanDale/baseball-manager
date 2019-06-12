@@ -32,15 +32,17 @@ class TeamDetail extends Component {
                             <tr>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Position</th>
                                 <th>Salary</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 hitters.map(player => (
-                                    <tr>
+                                    <tr key={player._id}>
                                         <td>{ player.firstName }</td>
                                         <td>{ player.lastName }</td>
+                                        <td>{ player.positionList.join(', ') }</td>
                                         <td>{ player.salary }</td>
                                     </tr>
                                 ))
@@ -64,7 +66,7 @@ class TeamDetail extends Component {
                         <tbody>
                             {
                                 startingPitchers.map(player => (
-                                    <tr>
+                                    <tr key={player._id}>
                                         <td>{ player.firstName }</td>
                                         <td>{ player.lastName }</td>
                                         <td>{ player.salary }</td>
@@ -90,7 +92,7 @@ class TeamDetail extends Component {
                         <tbody>
                             {
                                 reliefPitchers.map(player => (
-                                    <tr>
+                                    <tr key={player._id}>
                                         <td>{ player.firstName }</td>
                                         <td>{ player.lastName }</td>
                                         <td>{ player.salary }</td>
