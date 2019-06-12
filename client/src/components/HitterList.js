@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 import { getHitters } from '../actions/hitterActions';
+import PlayerAdd from './PlayerAdd';
 
 const defaultSorted = [{
     dataField: 'price',
@@ -42,7 +43,8 @@ class HitterList extends Component {
 
         this.state = {
             show: false,
-            activeHitter: {}
+            activeHitter: {},
+            selected: []
         };
 
         this.columns = [
@@ -169,11 +171,45 @@ class HitterList extends Component {
         }, 2000);
     }
 
+    handleOnSelect = (row, isSelect) => {
+        if (isSelect) {
+            this.setState(() => ({
+                selected: [...this.state.selected, row._id]
+            }));
+        } else {
+            this.setState(() => ({
+                selected: this.state.selected.filter(x => x !== row._id)
+            }));
+        }
+    }
+
+    handleOnSelectAll = (isSelect, rows) => {
+        const ids = rows.map(r => r._id);
+        if (isSelect) {
+            this.setState(() => ({
+                selected: ids
+            }));
+        } else {
+            this.setState(() => ({
+                selected: []
+            }));
+        }
+    }
+
     render() {
         const { hitters } = this.props.hitter;
+        const selectRow = {
+            mode: 'checkbox',
+            clickToSelect: true,
+            selected: this.state.selected,
+            onSelect: this.handleOnSelect,
+            onSelectAll: this.handleOnSelectAll
+        };
+
         return (
             <Card body>
                 <Card.Title>Hitter List</Card.Title>
+                <PlayerAdd playerType="hitters" players={this.state.selected}></PlayerAdd>
                 <BootstrapTable
                     striped
                     remote={{ sort: true }}
@@ -183,6 +219,7 @@ class HitterList extends Component {
                     defaultSorted={defaultSorted}
                     filter={filterFactory()}
                     onTableChange={this.handleTableChange}
+                    selectRow={selectRow}
                     bootstrap4
                 />
                 <Modal show={this.state.show} onHide={this.handleClose}>
