@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import { getTeam } from '../actions/teamActions';
+import PlayerRemove from './PlayerRemove';
 
 
 class TeamDetail extends Component {
@@ -30,6 +31,7 @@ class TeamDetail extends Component {
                     <Table>
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Position</th>
@@ -40,6 +42,12 @@ class TeamDetail extends Component {
                             {
                                 hitters.map(player => (
                                     <tr key={player._id}>
+                                        <td>
+                                            <PlayerRemove
+                                                playerType="hitters"
+                                                player={player}>
+                                            </PlayerRemove>
+                                        </td>
                                         <td>{ player.firstName }</td>
                                         <td>{ player.lastName }</td>
                                         <td>{ player.positionList.join(', ') }</td>

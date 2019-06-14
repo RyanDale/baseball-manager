@@ -32,12 +32,14 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    Team.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (error, document) => {
-        if (error) {
-            return res.send(500, { error });
-        }
-        return res.send(document);
-    });
+    Team.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+        .populate(['hitters', 'pitchers'])
+        .exec((error, document) => {
+            if (error) {
+                return res.send(500, { error });
+            }
+            return res.send(document);
+        });
 });
 
 router.delete('/:id', (req, res) => {
