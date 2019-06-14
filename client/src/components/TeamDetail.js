@@ -20,11 +20,13 @@ class TeamDetail extends Component {
 
     render() {
         const { team, loading } = this.props.team;
-        const [startingPitchers, reliefPitchers] = _.partition(team.pitchers, pitcher => pitcher.primaryPosition === 'SP');
         const hitters = _.get(team, 'hitters', []);
+        const pitchers = _.get(team, 'pitchers', []);
+        const [startingPitchers, reliefPitchers] = _.partition(pitchers, pitcher => pitcher.primaryPosition === 'SP');
+        const totalPoints = [...hitters, ...pitchers].reduce((sum, player) => sum + player.salary, 0);
         return (
             <Container>
-                <h1>{team.name}</h1>
+                <h1>{team.name} ({hitters.length + pitchers.length} of 25 players), {totalPoints}/6000 points</h1>
                 <Card body>
                     <Card.Title>Hitters ({hitters.length} of 12+) {hitters.reduce((value, p) => p.salary + value, 0)} points</Card.Title>
                     {
@@ -66,6 +68,7 @@ class TeamDetail extends Component {
                     <Table>
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Salary</th>
@@ -75,6 +78,12 @@ class TeamDetail extends Component {
                             {
                                 startingPitchers.map(player => (
                                     <tr key={player._id}>
+                                        <td>
+                                            <PlayerRemove
+                                                playerType="pitchers"
+                                                player={player}>
+                                            </PlayerRemove>
+                                        </td>
                                         <td>{ player.firstName }</td>
                                         <td>{ player.lastName }</td>
                                         <td>{ player.salary }</td>
@@ -92,6 +101,7 @@ class TeamDetail extends Component {
                     <Table>
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Salary</th>
@@ -101,6 +111,12 @@ class TeamDetail extends Component {
                             {
                                 reliefPitchers.map(player => (
                                     <tr key={player._id}>
+                                        <td>
+                                            <PlayerRemove
+                                                playerType="pitchers"
+                                                player={player}>
+                                            </PlayerRemove>
+                                        </td>
                                         <td>{ player.firstName }</td>
                                         <td>{ player.lastName }</td>
                                         <td>{ player.salary }</td>
