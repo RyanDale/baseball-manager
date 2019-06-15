@@ -1,34 +1,18 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import { Card, Table, Nav, Spinner, Modal, Button } from 'react-bootstrap';
+import { Card, Nav } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 import { getPitchers } from '../actions/pitcherActions';
 import PlayerAdd from './PlayerAdd';
+import PlayerDetailModal from './PlayerDetailModal';
 
 const defaultSorted = [{
     dataField: 'price',
     order: 'desc'
 }];
-
-function renderResultField(field) {
-    if (!field || !field.length) {
-        // Empty field, display as such
-        return '--';
-    } else if (field[0] === field[1]) {
-        // Same value so we don't want to display as a range
-        return field[0];
-    } else if (field[1] === 50) {
-        // This means a player maxes out at the first value
-        return `${field[0]}+`;
-    } else {
-        // Default, two different value fields
-        return field.join('-');
-    }
-}
-
 
 class PitcherList extends Component {
     static propTypes = {
@@ -197,6 +181,7 @@ class PitcherList extends Component {
             onSelect: this.handleOnSelect,
             onSelectAll: this.handleOnSelectAll
         };
+        const { activePitcher, show } = this.state;
 
         return (
             <Card body>
@@ -214,52 +199,11 @@ class PitcherList extends Component {
                     selectRow={selectRow}
                     bootstrap4
                 />
-                <Modal show={this.state.show} onHide={this.handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>
-                            {this.state.activePitcher.firstName} {this.state.activePitcher.lastName}
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <img height="400"
-                            src={`/api/pitchers/${this.state.activePitcher._id}/card`}
-                            style={{ display: 'block', margin: '0 auto' }} />
-                        <br />
-                        <Table striped bordered>
-                            <thead>
-                                <tr>
-                                    <th>X-R</th>
-                                    <th>K</th>
-                                    <th>GB</th>
-                                    <th>FB</th>
-
-                                    <th>BB</th>
-                                    <th>1B</th>
-                                    <th>2B</th>
-                                    <th>HR</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{renderResultField(this.state.activePitcher.xRange)}</td>
-                                    <td>{renderResultField(this.state.activePitcher.k)}</td>
-                                    <td>{renderResultField(this.state.activePitcher.gb)}</td>
-                                    <td>{renderResultField(this.state.activePitcher.fb)}</td>
-
-                                    <td>{renderResultField(this.state.activePitcher.bb)}</td>
-                                    <td>{renderResultField(this.state.activePitcher._1B)}</td>
-                                    <td>{renderResultField(this.state.activePitcher._2B)}</td>
-                                    <td>{renderResultField(this.state.activePitcher.hr)}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <PlayerDetailModal player={activePitcher}
+                    playerType='pitcher'
+                    show={show}
+                    closeModal={this.handleClose}>
+                </PlayerDetailModal>
             </Card>
         );
     }
