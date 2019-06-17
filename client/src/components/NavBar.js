@@ -12,7 +12,7 @@ class NavBar extends Component {
   render() {
     return (
       <HashRouter>
-        <Navbar bg="primary" variant="dark" style={{marginBottom: '20px'}}>
+        <Navbar bg="primary" variant="dark" style={{ marginBottom: '20px' }}>
           <Navbar.Brand href="#/">Clutch Baseball OS</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="#/">Home</Nav.Link>
@@ -21,13 +21,11 @@ class NavBar extends Component {
             <Nav.Link href="#/team-list">Teams</Nav.Link>
           </Nav>
         </Navbar>
-        <Container>
-          <Route path="/" exact component={Home} />
-          <Route path="/pitcher-list" component={PitcherList} />
-          <Route path="/hitter-list" component={HitterList} />
-          <Route path="/team-list" component={TeamList} />
-          <Route path="/team/:id" component={TeamDetail} />
-        </Container>
+        <Route path="/" exact component={Home} />
+        <Route path="/pitcher-list" component={PitcherList} />
+        <Route path="/hitter-list" component={HitterList} />
+        <Route path="/team-list" component={TeamList} />
+        <Route path="/team/:id" component={TeamDetail} />
       </HashRouter>
     );
   }
