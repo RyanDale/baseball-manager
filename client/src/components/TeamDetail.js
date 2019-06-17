@@ -48,11 +48,11 @@ class TeamDetail extends Component {
         const { team, loading } = this.props.team;
         const { show, activePlayer } = this.state;
         const hitters = _.get(team, 'hitters', []);
-        const pitchers = _.get(team, 'pitchers', []);
+        const pitchers = _.get(team, 'pitchers', []).sort((playerA, playerB) => playerB.salary - playerA.salary);
         const [startingPitchers, reliefPitchers] = _.partition(pitchers, pitcher => pitcher.primaryPosition === 'SP');
         const totalPoints = [...hitters, ...pitchers].reduce((sum, player) => sum + player.salary, 0);
         return (
-            <Container>
+            <div>
                 <h1>{team.name} ({hitters.length + pitchers.length} of 25 players), {totalPoints}/6000 points</h1>
                 <Card body>
                     <Card.Title>Hitters ({hitters.length} of 12+) {hitters.reduce((value, p) => p.salary + value, 0)} points</Card.Title>
@@ -99,6 +99,9 @@ class TeamDetail extends Component {
                                     <th>Card</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>Throws</th>
+                                    <th>Command</th>
+                                    <th>IP</th>
                                     <th>Salary</th>
                                 </tr>
                             </thead>
@@ -117,6 +120,9 @@ class TeamDetail extends Component {
                                             </td>
                                             <td>{player.firstName}</td>
                                             <td>{player.lastName}</td>
+                                            <td>{player.hand}</td>
+                                            <td>{player.cmd}</td>
+                                            <td>{player.ip}</td>
                                             <td>{player.salary}</td>
                                         </tr>
                                     ))
@@ -167,7 +173,7 @@ class TeamDetail extends Component {
                     show={show}
                     closeModal={this.handleClose}>
                 </PlayerDetailModal>
-            </Container>
+            </div>
         );
     }
 }
@@ -176,4 +182,4 @@ const mapStateToProps = state => ({
     team: state.team
 });
 
-export default connect(mapStateToProps, { getTeam/*, updateContact*/ })(TeamDetail);
+export default connect(mapStateToProps, { getTeam })(TeamDetail);
